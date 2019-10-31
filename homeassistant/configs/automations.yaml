@@ -1,0 +1,233 @@
+# automations.yaml
+
+# When the backyard RF remote powers on or off the
+# sonoff basic module, toggle the power on the sonoff
+# mini that controls the backyard lights
+- alias: Backyard Remote On
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.backyard_remote
+    to: "on"
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.backyard_lights
+
+- alias: Backyard Remote Off
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.backyard_remote
+    to: "off"
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.backyard_lights
+
+# If the backyard lights are on for 45 minutes
+# trigger the backyard_remote to turn them off
+- alias: Backyard Lights Remote Timer
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.backyard_remote
+    to: "on"
+    for:
+      minutes: 45
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.backyard_remote
+
+- alias: Backyard Lights Timer
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.backyard_lights
+    to: "on"
+    for:
+      minutes: 50
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.backyard_lights
+
+#
+# Trigger on any of the following:
+# - door open for 30 minutes
+# - sunset +25 minutes
+# - nest away mode = on
+# Conditions:
+# - door open for at least 30 minutes AND
+#   any of the following:
+#   - sunset +25 minutes or
+#   - before sunrise
+#   - nest away mode = on
+- alias: Auto Close Garage North
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: switch.garage_north
+      to: "on"
+      for:
+        minutes: 30
+    - platform: state
+      entity_id: binary_sensor.home_away
+      to: "on"
+    - platform: sun
+      event: sunset
+      offset: "+00:25:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.garage_north
+        state: "on"
+        for:
+          minutes: 30
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+            after_offset: "+00:25:00"
+          - condition: sun
+            before: sunrise
+          - condition: state
+            entity_id: binary_sensor.home_away
+            state: "on"
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.garage_north
+
+#
+# Trigger on any of the following:
+# - door open for 30 minutes
+# - sunset +25 minutes
+# - nest away mode = on
+# Conditions:
+# - door open for at least 30 minutes AND
+#   any of the following:
+#   - sunset +25 minutes
+#   - before sunrise
+#   - nest away mode = on
+- alias: Auto Close Garage South
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: switch.garage_south
+      to: "on"
+      for:
+        minutes: 30
+    - platform: state
+      entity_id: binary_sensor.home_away
+      to: "on"
+    - platform: sun
+      event: sunset
+      offset: "+00:25:00"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.garage_south
+        state: "on"
+        for:
+          minutes: 30
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+            after_offset: "+00:25:00"
+          - condition: sun
+            before: sunrise
+          - condition: state
+            entity_id: binary_sensor.home_away
+            state: "on"
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.garage_south
+
+# If the door is open after 60 minutes, send a tweet
+- alias: Alert Garage North Open
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.garage_north
+    to: "on"
+    for:
+      minutes: 60
+  action:
+    service: notify.twitter
+    data:
+      message: "@shmick The north garage door is still open"
+
+# If the door is open after 60 minutes, send a tweet
+- alias: Alert Garage South Open
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.garage_south
+    to: "on"
+    for:
+      minutes: 60
+  action:
+    service: notify.twitter
+    data:
+      message: "@shmick The south garage door is still open"
+
+- alias: Nest Tweet
+  hide_entity: true
+  trigger:
+    - platform: state
+      entity_id: sensor.living_room_thermostat_hvac_state
+      to: "heat"
+    - platform: state
+      entity_id: sensor.living_room_thermostat_hvac_state
+      to: "cool"
+    - platform: state
+      entity_id: sensor.living_room_thermostat_hvac_state
+      to: "off"
+  action:
+    service: notify.twitter
+    data_template:
+      message: >
+        {% set nest_state = 'None' %}
+        {% if is_state('sensor.living_room_thermostat_hvac_state', "cool") %}
+        {% set nest_state = states('sensor.living_room_thermostat_hvac_state') | replace("cool", "ON") %}
+        {% elif is_state('sensor.living_room_thermostat_hvac_state', "heat") %}
+        {% set nest_state = states('sensor.living_room_thermostat_hvac_state') | replace("heat", "ON") %}
+        {% elif is_state('sensor.living_room_thermostat_hvac_state', "off") %}
+        {% set nest_state = states('sensor.living_room_thermostat_hvac_state') | replace("off", "OFF") %}
+        {% endif %}
+        {{ states('sensor.living_room_thermostat_operation_mode') | upper }}
+        {{ nest_state }}
+        at {{ now().strftime('%H:%M') }}
+        Target: {{ states('sensor.living_room_thermostat_target') }},
+        Inside: {{ states('sensor.living_room_thermostat_temperature') }},
+        Outside: {{ states('sensor.temperature_2') }},
+        Outside RH: {{ states('sensor.humidity_2') }}%,
+        Inside RH: {{ states('sensor.living_room_thermostat_humidity') }}% @shmick
+
+- alias: Workday Morning Lights On
+  hide_entity: true
+  trigger:
+    platform: time
+    at: "07:00:00"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    - condition: sun
+      before: sunrise
+  action:
+    service: homeassistant.turn_on
+    entity_id: switch.outside_lights
+
+- alias: Workday Morning Lights Off
+  hide_entity: true
+  trigger:
+    platform: time
+    at: "07:30:00"
+  condition:
+    condition: state
+    entity_id: switch.outside_lights
+    state: "on"
+  action:
+    service: homeassistant.turn_off
+    entity_id: switch.outside_lights

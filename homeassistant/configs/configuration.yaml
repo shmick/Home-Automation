@@ -1,0 +1,172 @@
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+recorder: !include recorder.yaml
+switch: !include switch.yaml
+sensor: !include sensor.yaml
+binary_sensor: !include binary_sensor.yaml
+notify: !include notify.yaml
+nest: !include nest.yaml
+mqtt: !include mqtt.yaml
+
+homeassistant:
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: metric
+  customize:
+    automation.nest_tweet:
+      icon: mdi:twitter
+    switch.backyard_lights:
+      icon: mdi:spotlight-beam
+    # the customize section handles visibility, icons, names, etc...
+    sensor.pressure_2:
+      hidden: true
+    sensor.statements_2:
+      hidden: true
+    sensor.humidex_2:
+      hidden: true
+    sensor.endings_2:
+      hidden: true
+    sensor.tendency_2:
+      hidden: true
+    sensor.humidity_2:
+      hidden: true
+    sensor.visibility_2:
+      hidden: true
+    sensor.condition_2:
+      hidden: true
+    sensor.wind_speed_2:
+      hidden: true
+    sensor.wind_gust_2: 
+      hidden: true
+    sensor.wind_direction_2:
+      hidden: true
+    sensor.wind_bearing_2:
+      hidden: true
+    sensor.uv_index_2:
+      hidden: true
+    sensor.icon_code_2:
+      hidden: true
+    sensor.dew_point_2:
+      hidden: true
+    sensor.precipitation_yesterday_2:
+      hidden: true
+    sensor.forecast_2:
+      hidden: true
+    sensor.watches_2:
+      hidden: true
+    sensor.basement_nest_protect_battery_health:
+      hidden: true
+    sensor.basement_nest_protect_co_status:
+      hidden: true
+    sensor.basement_nest_protect_color_status:
+      hidden: true
+    sensor.basement_nest_protect_smoke_status:
+      hidden: true
+    sensor.kids_room_nest_protect_battery_health:
+      hidden: true
+    sensor.kids_room_nest_protect_co_status:
+      hidden: true
+    sensor.kids_room_nest_protect_color_status:
+      hidden: true
+    sensor.kids_room_nest_protect_smoke_status:
+      hidden: true
+    sensor.living_room_nest_protect_battery_health:
+      hidden: true
+    sensor.living_room_nest_protect_co_status:
+      hidden: true
+    sensor.living_room_nest_protect_color_status:
+      hidden: true
+    sensor.living_room_nest_protect_smoke_status:
+      hidden: true
+    sensor.master_bedroom_nest_protect_battery_health:
+      hidden: true
+    sensor.master_bedroom_nest_protect_co_status:
+      hidden: true
+    sensor.master_bedroom_nest_protect_color_status:
+      hidden: true
+    sensor.master_bedroom_nest_protect_smoke_status:
+      hidden: true
+    sensor.spare_bedroom_nest_protect_battery_health:
+      hidden: true
+    sensor.spare_bedroom_nest_protect_co_status:
+      hidden: true
+    sensor.spare_bedroom_nest_protect_color_status:
+      hidden: true
+    sensor.spare_bedroom_nest_protect_smoke_status:
+      hidden: true
+    sensor.upstairs_nest_protect_landing_battery_health:
+      hidden: true
+    sensor.upstairs_nest_protect_landing_co_status:
+      hidden: true
+    sensor.upstairs_nest_protect_landing_color_status:
+      hidden: true
+    sensor.upstairs_nest_protect_landing_smoke_status:
+      hidden: true
+    sensor.home_eta:
+      hidden: true
+    binary_sensor.home_away:
+      hidden: true
+    binary_sensor.upstairs_nest_protect_landing_online:
+      hidden: true
+    binary_sensor.living_room_thermostat_fan:
+      hidden: true
+    binary_sensor.living_room_thermostat_online:
+      hidden: true
+    binary_sensor.living_room_nest_protect_online:
+      hidden: true
+    binary_sensor.living_room_thermostat_is_using_emergency_heat:
+      hidden: true
+    binary_sensor.basement_nest_protect_online:
+      hidden: true
+    binary_sensor.living_room_thermostat_is_locked:
+      hidden: true
+    binary_sensor.master_bedroom_nest_protect_online:
+      hidden: true
+    binary_sensor.living_room_thermostat_has_leaf:
+      hidden: true
+    binary_sensor.spare_bedroom_nest_protect_online:
+      hidden: true
+    binary_sensor.kids_room_nest_protect_online:
+      hidden: true
+    sensor.living_room_thermostat_target:
+      friendly_name: Nest Target Temp
+    sensor.living_room_thermostat_temperature:
+      friendly_name: Nest House Temp
+    sensor.living_room_thermostat_hvac_state:
+      friendly_name: Nest State
+    sensor.living_room_thermostat_operation_mode:
+      friendly_name: Nest Mode
+    sensor.living_room_thermostat_humidity:
+      friendly_name: Nest Humidity
+
+# Discover some devices automatically
+discovery:
+zeroconf:
+
+weather:
+  - platform: environment_canada
+
+camera:
+  - platform: environment_canada
+
+amcrest:
+  - host: 192.168.1.55
+    username: !secret amcrest_username
+    password: !secret amcrest_password
+    stream_source: snapshot
+    scan_interval: 5
+
+
+media_player:
+  - platform: denonavr
+    host: 192.168.1.192
+    name: FamRoom 1713
+    show_all_sources: true
+
+roku:
+  - host: 192.168.1.177

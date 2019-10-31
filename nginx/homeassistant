@@ -1,0 +1,26 @@
+server {
+        listen       443 ssl http2;
+        server_name             homeassistant.example.com;
+        ssl_certificate         fullchain.pem;
+        ssl_certificate_key     privkey.pem;
+        include                 /etc/nginx/ssl-prefs;
+
+        location / {
+                proxy_pass http://192.168.1.1:8123;
+                proxy_set_header Host $host;
+
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+        }
+
+        location /api/websocket {
+                proxy_pass http://192.168.1.1:8123/api/websocket;
+                proxy_set_header Host $host;
+
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+        }
+}
+

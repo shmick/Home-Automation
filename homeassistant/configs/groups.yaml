@@ -1,0 +1,14 @@
+garage:
+  name: Garage
+  all: true
+  entities:
+    - sensor.garage_north
+    - sensor.garage_south
+    - switch.garage_north
+    - switch.garage_south
+backyard:
+  name: Backyard
+  all: true
+  entities:
+    - switch.backyard_remote
+    - switch.backyard_lights

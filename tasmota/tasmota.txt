@@ -1,0 +1,25 @@
+##############################################
+# Basic configs for all Sonoff/Tasmota nodes #
+##############################################
+
+Timezone 99
+TimeDST 0,2,3,1,2,-240
+TimeSTD 0,1,11,1,2,-300
+SetOption19 1 # Enable Home Assistant automatic discovery
+
+###########
+# Timers  #
+###########
+
+# Turn the lights off after 6 hours (21600 seconds) 
+Timer1 {"Arm":1,"Mode":0,"Time":"01:30","Window":0,"Days":"1111111","Repeat":1,"Output":1,"Action":0}}
+Rule1 on power1#state=1 do backlog power1 %value%; RuleTimer1 21600 endon on Rules#Timer=1 do power1 off endon
+Rule1 1
+
+##################
+# Remote Control #
+##################
+
+# Using a wemos running Tasmota, publish an mqtt message
+Rule1 on switch1#state do publish cmnd/bsmt-front/power %value% endon on 
+Rule1 1

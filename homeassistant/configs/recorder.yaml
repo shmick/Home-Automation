@@ -1,0 +1,8 @@
+db_url: !secret recorder_db_url
+exclude:
+  domains:
+    - group
+  entities:
+    - automation.backyard_remote_on
+    - automation.backyard_remote_off
+    - automation.nest_tweet

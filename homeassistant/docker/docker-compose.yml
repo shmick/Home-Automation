@@ -1,0 +1,20 @@
+version: "3"
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi3-homeassistant:latest
+    restart: unless-stopped
+    volumes:
+      - config:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8123:8123"
+    network_mode: host
+    environment:
+      TZ: America/Toronto
+      PUID: 1000
+      PGID: 1000
+
+volumes:
+  config:
+    driver: local

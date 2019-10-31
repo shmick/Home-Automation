@@ -1,0 +1,24 @@
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /
+    - type: memory_free
+    - type: load_1m
+
+- platform: environment_canada
+
+- platform: mqtt
+  name: "Garage North"
+  icon: mdi:garage
+  state_topic: "stat/garage/north"
+  payload_available: "closed"
+  payload_not_available: "open"
+  value_template: "{{ value_json.state }}"
+
+- platform: mqtt
+  name: "Garage South"
+  icon: mdi:garage
+  state_topic: "stat/garage/south"
+  payload_available: "closed"
+  payload_not_available: "open"
+  value_template: "{{ value_json.state }}"
