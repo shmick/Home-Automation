@@ -6,7 +6,7 @@ I'm using [Home Assistant](https://www.home-assistant.io/) to automate All The T
 
 ## Devices being used
 - Wemo Switches
-- Sonoff Basic switches
+- Sonoff Basic switches running [Tasmota](https://github.com/arendst/Tasmota)
 
 ## Other hardware & software
 [mqtt-door](https://github.com/shmick/mqtt-door/) running on a separate Raspberry Pi 
