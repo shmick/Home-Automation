@@ -22,3 +22,25 @@
   payload_available: "closed"
   payload_not_available: "open"
   value_template: "{{ value_json.state }}"
+
+- platform: nut
+  name: NAS UPS CP1500AVRLCD
+  host: 192.168.1.40
+  username: ups
+  resources:
+    - ups.status.display
+    - ups.load
+    - input.voltage
+    - battery.charge
+    - battery.runtime
+
+- platform: nut
+  name: Basement UPS CP825
+  host: 192.168.1.85
+  username: Basement_UPS
+  resources:
+    - ups.status.display
+    - ups.load
+    - input.voltage
+    - battery.charge
+    - battery.runtime
