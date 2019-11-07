@@ -153,9 +153,13 @@
     for:
       minutes: 60
   action:
-    service: notify.twitter
-    data:
-      message: "@shmick The north garage door is still open"
+    - service: notify.twitter
+      data:
+        message: "@shmick The north garage door is still open"
+    - service: notify.email_main
+      data:
+        title: "North garage door is still open"
+        message: "The north garage door is still open"
 
 # If the door is open after 60 minutes, send a tweet
 - alias: Alert Garage South Open
@@ -167,9 +171,13 @@
     for:
       minutes: 60
   action:
-    service: notify.twitter
-    data:
-      message: "@shmick The south garage door is still open"
+    - service: notify.twitter
+      data:
+        message: "@shmick The south garage door is still open"
+    - service: notify.email_main
+      data:
+        title: "South garage door is still open"
+        message: "The south garage door is still open"
 
 - alias: Nest Tweet
   hide_entity: true
@@ -231,3 +239,47 @@
   action:
     service: homeassistant.turn_off
     entity_id: switch.outside_lights
+
+- alias: Office UPS Low Batt
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.nas_ups_cp1500avrlcd_battery_charge
+    below: 80
+  action:
+    service: notify.email_main
+    data:
+      title: "Office UPS is below 80%"
+      message: "Office UPS is below 80%"
+
+- alias: Office UPS Fully Charged
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.nas_ups_cp1500avrlcd_battery_charge
+    above: 99
+  action:
+    service: notify.email_main
+    data:
+      title: "Office UPS is fully charged"
+      message: "Office UPS is fully charged"
+
+- alias: Baaement UPS Low Batt
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.basement_ups_cp825_battery_charge
+    below: 75
+  action:
+    service: notify.email_main
+    data:
+      title: "Basement UPS is below 75%"
+      message: "Basement UPS is below 75%"
+
+- alias: Baaement UPS Fully Charged
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.basement_ups_cp825_battery_charge
+    above: 99
+  action:
+    service: notify.email_main
+    data:
+      title: "Basement UPS is fully charged"
+      message: "Basement UPS is fully charged"
