@@ -1,0 +1,277 @@
+{
+    "data": {
+        "config": {
+            "title": "Home",
+            "views": [
+                {
+                    "badges": [
+                        {
+                            "entity": "binary_sensor.workday_sensor"
+                        },
+                        {
+                            "entity": "sensor.disk_use_percent"
+                        },
+                        {
+                            "entity": "sensor.load_1m"
+                        },
+                        {
+                            "entity": "sensor.memory_free"
+                        },
+                        {
+                            "entity": "sensor.advisories_2"
+                        },
+                        {
+                            "entity": "sensor.wind_chill_2"
+                        },
+                        {
+                            "entity": "sensor.temperature_2"
+                        },
+                        {
+                            "entity": "sensor.high_temperature_2"
+                        },
+                        {
+                            "entity": "sensor.low_temperature_2"
+                        },
+                        {
+                            "entity": "sensor.chance_of_precip_2"
+                        },
+                        {
+                            "entity": "sensor.warnings_2"
+                        }
+                    ],
+                    "cards": [
+                        {
+                            "entities": [
+                                "switch.backyard_remote",
+                                "switch.backyard_lights"
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Backyard",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.garage_north"
+                                },
+                                {
+                                    "entity": "sensor.garage_south"
+                                },
+                                {
+                                    "entity": "cover.garage_north",
+                                    "icon": "mdi:garage"
+                                },
+                                {
+                                    "entity": "cover.garage_south",
+                                    "icon": "mdi:garage"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Garage",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.living_room_thermostat_temperature",
+                                    "icon": "mdi:home-thermometer-outline",
+                                    "name": "Inside"
+                                },
+                                {
+                                    "entity": "sensor.living_room_thermostat_hvac_state",
+                                    "icon": "mdi:power",
+                                    "name": "State"
+                                },
+                                {
+                                    "entity": "sensor.living_room_thermostat_operation_mode",
+                                    "icon": "mdi:air-filter",
+                                    "name": "Mode"
+                                },
+                                {
+                                    "entity": "sensor.living_room_thermostat_target",
+                                    "name": "Target"
+                                },
+                                {
+                                    "entity": "sensor.living_room_thermostat_humidity",
+                                    "name": "Humidity"
+                                }
+                            ],
+                            "title": "Nest",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "light.famroom_dimmer",
+                                    "icon": "mdi:light-switch"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Family Room",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "switch.basement_front_lights"
+                                },
+                                {
+                                    "entity": "switch.basement_back_lights"
+                                },
+                                {
+                                    "entity": "switch.workbench",
+                                    "icon": "mdi:power-socket-us"
+                                }
+                            ],
+                            "show_header_toggle": true,
+                            "title": "Basement",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "switch.espresso_machine",
+                                    "icon": "mdi:coffee"
+                                }
+                            ],
+                            "show_header_toggle": false,
+                            "title": "Kitchen",
+                            "type": "entities"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "switch.outside_lights",
+                                    "icon": "mdi:light-switch"
+                                },
+                                {
+                                    "entity": "switch.frontcam_motion",
+                                    "icon": "mdi:cctv"
+                                }
+                            ],
+                            "show_icon": true,
+                            "title": "Front Yard",
+                            "type": "glance"
+                        },
+                        {
+                            "entity": "climate.living_room",
+                            "type": "thermostat"
+                        },
+                        {
+                            "entity": "weather.richmond_hill",
+                            "type": "weather-forecast"
+                        },
+                        {
+                            "entity": "camera.amcrest_camera",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entity": "camera.king_city_radar",
+                            "type": "picture-entity"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.basement_ups_cp825_status",
+                                    "icon": "mdi:power",
+                                    "name": "Status"
+                                },
+                                {
+                                    "entity": "sensor.basement_ups_cp825_battery_charge",
+                                    "icon": "mdi:battery",
+                                    "name": "Charge"
+                                },
+                                {
+                                    "entity": "sensor.basement_ups_cp825_load",
+                                    "icon": "mdi:percent",
+                                    "name": "Load"
+                                },
+                                {
+                                    "entity": "sensor.basement_ups_cp825_input_voltage",
+                                    "icon": "mdi:power-plug",
+                                    "name": "Input Volts"
+                                },
+                                {
+                                    "entity": "sensor.basement_ups_cp825_battery_runtime",
+                                    "icon": "mdi:timer-sand",
+                                    "name": "Runtime"
+                                }
+                            ],
+                            "show_icon": true,
+                            "show_name": true,
+                            "show_state": true,
+                            "title": "Basement UPS",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.nas_ups_cp1500avrlcd_status",
+                                    "icon": "mdi:power",
+                                    "name": "Status"
+                                },
+                                {
+                                    "entity": "sensor.nas_ups_cp1500avrlcd_battery_charge",
+                                    "icon": "mdi:battery",
+                                    "name": "Charge"
+                                },
+                                {
+                                    "entity": "sensor.nas_ups_cp1500avrlcd_load",
+                                    "icon": "mdi:percent",
+                                    "name": "Load"
+                                },
+                                {
+                                    "entity": "sensor.nas_ups_cp1500avrlcd_input_voltage",
+                                    "icon": "mdi:power-plug",
+                                    "name": "Input Volts"
+                                },
+                                {
+                                    "entity": "sensor.nas_ups_cp1500avrlcd_battery_runtime",
+                                    "icon": "mdi:timer-sand",
+                                    "name": "Runtime"
+                                }
+                            ],
+                            "title": "NAS UPS",
+                            "type": "glance"
+                        },
+                        {
+                            "entities": [
+                                {
+                                    "entity": "sensor.navien_ups_es_750g_status",
+                                    "icon": "mdi:power",
+                                    "name": "Status"
+                                },
+                                {
+                                    "entity": "sensor.navien_ups_es_750g_battery_charge",
+                                    "icon": "mdi:battery",
+                                    "name": "Charge"
+                                },
+                                {
+                                    "entity": "sensor.navien_ups_es_750g_load",
+                                    "icon": "mdi:percent",
+                                    "name": "Load"
+                                },
+                                {
+                                    "entity": "sensor.navien_ups_es_750g_input_voltage",
+                                    "icon": "mdi:power-plug",
+                                    "name": "Input Volts"
+                                },
+                                {
+                                    "entity": "sensor.navien_ups_es_750g_battery_runtime",
+                                    "icon": "mdi:timer-sand",
+                                    "name": "Runtime"
+                                }
+                            ],
+                            "title": "Navien UPS",
+                            "type": "glance"
+                        }
+                    ],
+                    "path": "default_view",
+                    "title": "Home"
+                }
+            ]
+        }
+    },
+    "key": "lovelace",
+    "version": 1
+}
