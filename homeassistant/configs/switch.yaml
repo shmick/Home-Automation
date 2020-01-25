@@ -1,9 +1,22 @@
 - platform: mqtt
-  name: "Basement Lights"
+  name: "Basement Front Lights"
   icon: mdi:ceiling-light
   state_topic: "stat/bsmt-front/POWER"
   command_topic: "cmnd/bsmt-front/POWER"
   availability_topic: "tele/bsmt-front/LWT"
+  payload_available: "Online"
+  payload_not_available: "Offline"
+  payload_on: "ON"
+  payload_off: "OFF"
+  qos: 1
+  retain: false
+
+- platform: mqtt
+  name: "Basement Back Lights"
+  icon: mdi:ceiling-light
+  state_topic: "stat/bsmt-back/POWER"
+  command_topic: "cmnd/bsmt-back/POWER"
+  availability_topic: "tele/bsmt-back/LWT"
   payload_available: "Online"
   payload_not_available: "Offline"
   payload_on: "ON"
