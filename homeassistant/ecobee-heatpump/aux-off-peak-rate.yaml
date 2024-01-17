@@ -1,0 +1,88 @@
+# Home Assistant Automation Script to switch from Aux Heat (furnace) back to Heat Pump heating based on Ontario Energy Board Hydro TOU Rates Data being mid or low peak
+# Follwing compoents required for script to work
+# https://hacs.xyz/docs/configuration/basic/
+# https://github.com/jrfernandes/ontario_energy_board
+# https://www.home-assistant.io/integrations/environment_canada
+
+alias: Aux Off non-peak rate
+description: ""
+
+# Uses OEB addon to determine off peak/mid peak status to trigger automation
+
+
+trigger:
+  - platform: state
+    entity_id:
+      - sensor. LocalHydroUtility_rate
+    attribute: active_peak
+    to: off_peak
+  - platform: state
+    entity_id:
+      - sensor. LocalHydroUtility_rate
+    attribute: active_peak
+    to: mid_peak
+	
+# tiggers automation only if heating mode on Aux Heat
+
+condition:
+  - condition: state
+    entity_id: ecobee
+    attribute: aux_heat
+    state: "on"
+	
+# if automation condition is met, checks if weather condition and tou is appropriate to switch back to Heat Pump heating or remaing on Aux Heating and sends notifications as appropriate
+
+action:
+
+# check if on Aux heat and if not no need to switch back to Heat Pump. Also check if outdoor temp is above -5C or it should remain in Aux for increased efficiency
+  - if:
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: ecobee
+            attribute: aux_heat
+            state: "on"
+          - condition: numeric_state
+            entity_id: sensor.local_temperature
+            above: -5
+    then:
+	
+# check if diffrentce between set temperature and current temperature on ecobee is less than 1 degrees. If diffrence is more than 1C, keep on Aux mode for efficiency. Notify accordingly
+	
+      - if:
+          - condition: template
+            value_template: >
+              {% set thermostat = 'climate.my_ecobee_3' %} {% set current =
+              state_attr(thermostat, 'current_temperature') %} {% set target =
+              state_attr(thermostat, 'temperature') %} {{ target - current > 1
+              }}
+        then:
+          - service: climate.set_aux_heat
+            data:
+              aux_heat: true
+            target:
+              entity_id: ecobee
+          - service: notify.notify
+            data:
+              message: >-
+                Ecobee remained on Aux heating, conditions were not met to
+                switch to Heat Pump.
+              title: Aux Heat
+        else:
+          - service: climate.set_aux_heat
+            data:
+              aux_heat: false
+            target:
+              entity_id: ecobee
+      - service: notify.notify
+        data:
+          message: Ecobee switched from Aux heating heating to Heat Pump.
+          title: Aux Heat
+    else:
+      - service: notify.notify
+        data:
+          message: >-
+            Ecobee remained on Aux heating, conditions were not met to switch to
+            Heat Pump.
+          title: Aux Heat
+mode: single
