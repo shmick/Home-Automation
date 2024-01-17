@@ -1,0 +1,67 @@
+# Home Assistant Automation Script to switch from Heat Pump to Aux Heat (furnace) based on Ontario Energy Board Hydro TOU Rates Data
+# Follwing compoents required for script to work
+# https://hacs.xyz/docs/configuration/basic/
+# https://github.com/jrfernandes/ontario_energy_board
+# https://www.home-assistant.io/integrations/environment_canada
+
+alias: Aux On peak rate
+description: ""
+
+# Uses OEB addon to determine on peak status to trigger automation
+
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.LocalHydroUtility_residential_rate
+    attribute: active_peak
+    to: on_peak
+
+# Check if following conditions are met before triggering action:
+# Check if outdoor temp below -1C or its snowing or if colder than 3C and humidity greater than 80% (this combo increases need for defrost cycles causing lower energy efficincy)
+
+condition: []
+action:
+  - if:
+      - condition: state
+        entity_id: ecobee
+        state: heat
+      - condition: or
+        conditions:
+          - condition: numeric_state
+            entity_id: sensor.local_temperature
+            below: -1
+          - condition: state
+            entity_id: weather.local
+            state: snowy
+          - condition: and
+            conditions:
+              - condition: numeric_state
+                entity_id: sensor.lcoal_humidity
+                above: 80
+                enabled: true
+              - condition: numeric_state
+                entity_id: sensor.local_temperature
+                below: 3
+
+# if conditions are met, switch ecobee to Aux Heat and send notification
+    then:
+      - service: climate.set_aux_heat
+        data:
+          aux_heat: true
+        target:
+          entity_id: ecobee
+      - service: notify.notify
+        data:
+          message: Ecobee switched from Heat Pump heating to Aux heating.
+          title: Aux Heat
+
+# if conditions are not met, keep ecobee on Heat Mode and send notification
+
+    else:
+      - service: notify.notify
+        data:
+          message: >-
+            Ecobee remained on Heat Pump heating, conditions were not met to
+            switch to Aux Heat.
+          title: Aux Heat
+mode: single
