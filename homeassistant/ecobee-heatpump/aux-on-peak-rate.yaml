@@ -15,7 +15,7 @@ trigger:
       - sensor.LocalHydroUtility_residential_rate
     attribute: active_peak
     to: on_peak
-	
+
 # Check if following conditions are met before triggering action:
 # Check if outdoor temp below -1C or its snowing or if colder than 3C and humidity greater than 80% (this combo increases need for defrost cycles causing lower energy efficincy)
 
@@ -42,7 +42,7 @@ action:
               - condition: numeric_state
                 entity_id: sensor.local_temperature
                 below: 3
-				
+
 # if conditions are met, switch ecobee to Aux Heat and send notification
     then:
       - service: climate.set_aux_heat
@@ -54,7 +54,7 @@ action:
         data:
           message: Ecobee switched from Heat Pump heating to Aux heating.
           title: Aux Heat
-		  
+
 # if conditions are not met, keep ecobee on Heat Mode and send notification
 
     else:

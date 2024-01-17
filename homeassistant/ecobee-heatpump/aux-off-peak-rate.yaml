@@ -21,7 +21,7 @@ trigger:
       - sensor. LocalHydroUtility_rate
     attribute: active_peak
     to: mid_peak
-	
+
 # tiggers automation only if heating mode on Aux Heat
 
 condition:
@@ -29,7 +29,7 @@ condition:
     entity_id: ecobee
     attribute: aux_heat
     state: "on"
-	
+
 # if automation condition is met, checks if weather condition and tou is appropriate to switch back to Heat Pump heating or remaing on Aux Heating and sends notifications as appropriate
 
 action:
@@ -46,9 +46,9 @@ action:
             entity_id: sensor.local_temperature
             above: -5
     then:
-	
+
 # check if diffrentce between set temperature and current temperature on ecobee is less than 1 degrees. If diffrence is more than 1C, keep on Aux mode for efficiency. Notify accordingly
-	
+
       - if:
           - condition: template
             value_template: >
